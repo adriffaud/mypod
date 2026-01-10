@@ -10,8 +10,8 @@
 	mipi_dbi: mipi_dbi {
 		compatible = "zephyr,mipi-dbi-spi";
 		spi-dev = <&spi22>;
-		dc-gpios = <&gpio0 8 GPIO_ACTIVE_HIGH>;
-		reset-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;
+		dc-gpios = <&gpio1 12 GPIO_ACTIVE_HIGH>;
+		reset-gpios = <&gpio1 11 GPIO_ACTIVE_LOW>;
 		write-only;
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -19,7 +19,8 @@
 		st7789v: st7789v@0 {
 			compatible = "sitronix,st7789v";
 			reg = <0>;
-			mipi-max-frequency = <DT_FREQ_M(24)>;
+			mipi-max-frequency = <DT_FREQ_M(4)>;
+			ready-time-ms = <120>;
 
 			width = <240>;
 			height = <320>;
@@ -49,15 +50,15 @@
 &pinctrl {
 	spi22_default: spi22_default {
 		group1 {
-			psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,
-				<NRF_PSEL(SPIM_MOSI, 0, 6)>;
+			psels = <NRF_PSEL(SPIM_SCK, 1, 8)>,
+				<NRF_PSEL(SPIM_MOSI, 1, 9)>;
 		};
 	};
 
 	spi22_sleep: spi22_sleep {
 		group1 {
-			psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,
-				<NRF_PSEL(SPIM_MOSI, 0, 6)>;
+			psels = <NRF_PSEL(SPIM_SCK, 1, 8)>,
+				<NRF_PSEL(SPIM_MOSI, 1, 9)>;
 			low-power-enable;
 		};
 	};
@@ -65,7 +66,7 @@
 
 &spi22 {
 	status = "okay";
-	cs-gpios = <&gpio0 7 GPIO_ACTIVE_LOW>;
+	cs-gpios = <&gpio1 13 GPIO_ACTIVE_LOW>;
 	pinctrl-0 = <&spi22_default>;
 	pinctrl-1 = <&spi22_sleep>;
 	pinctrl-names = "default", "sleep";
